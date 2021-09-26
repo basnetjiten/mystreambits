@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessDonationMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,7 @@ use App\User;
 
 class DonationsController extends Controller
 {
-    
+
     var $view = [];
 
     public function __construct()
@@ -27,7 +28,7 @@ class DonationsController extends Controller
         $this->view['title'] = trans('donations.home.title');
         return view('donations.home', $this->view);
     }
-    
+
     public function getData()
     {
         return DataTables::eloquent(Messages::select(['updated_at', 'status', 'billing_system', 'name', 'amount', 'commission', 'message', 'id'])->where('user_id', Auth::user()->id)->whereIn('status', ['success', 'user', 'refund']))
@@ -44,41 +45,43 @@ class DonationsController extends Controller
                     return $data->message;
             })->toJson();
     }
-    
+
     public function postRemove(Request $request)
     {
         $this->validate($request, [
-            'id' => [ 'required', 'integer' ],
+            'id' => ['required', 'integer'],
         ]);
         if (Messages::where('user_id', Auth::user()->id)->where('id', $request->id)->delete())
-            return response()->json(['success'=> trans('donations.remove.success')]);
-        return response()->json(['error'=> trans('donations.remove.error')]);
+            return response()->json(['success' => trans('donations.remove.success')]);
+        return response()->json(['error' => trans('donations.remove.error')]);
     }
-    
+
     public function postCreate(Request $request)
     {
         $this->validate($request, [
-            'amount' => [ 'required', 'numeric', 'min:0.01' ],
-            'name' => [ 'required' ],
-            'message' => [ 'nullable', 'max:512' ],
-            'updated_at' => [ 'date' ]
+            'amount' => ['required', 'numeric', 'min:0.01'],
+            'name' => ['required'],
+            'message' => ['nullable', 'max:512'],
+            'updated_at' => ['date']
         ]);
         $data = $request->only(['amount', 'name', 'message', 'updated_at']);
         $data['user_id'] = Auth::user()->id;
         $data['status'] = 'user';
-        
-        $data['updated_at'] = (new Carbon($data['updated_at'], Auth::user()->timezone))->setTimezone(config('app.timezone'));
 
-        if (Messages::create($data))
-            return response()->json(['success'=> trans('donations.create.success')]);
-        return response()->json(['error'=> trans('donations.create.error')]);
+        $data['updated_at'] = (new Carbon($data['updated_at'], Auth::user()->timezone))->setTimezone(config('app.timezone'));
+        $message = Messages::create($data);
+        if ($message != null) {
+            ProcessDonationMessage::dispatch($message)->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+            return response()->json(['success' => trans('donations.create.success')]);
+        }
+        return response()->json(['error' => trans('donations.create.error')]);
     }
-    
+
     /**
      *  Donate
      */
     public function getDonate(Request $request, $source, $id)
-    { 
+    {
         $this->view['user'] = User::where('token', $source . '::' . $id)->first();
         if (!$this->view['user'])
             abort(404);
@@ -90,8 +93,9 @@ class DonationsController extends Controller
         $this->view['conditions'] = Storage::get("pages/" . \Lang::locale() . "/terms-and-conditions.html");
         return view('donations.donate', $this->view);
     }
+
     public function postDonate(Request $request, $source, $id)
-    { 
+    {
         $user = User::where('token', $source . '::' . $id)->first();
         if (!$user)
             abort(404);
@@ -100,16 +104,16 @@ class DonationsController extends Controller
             abort(403);
 
         $this->validate($request, [
-            'amount' => [ 'required', 'numeric', 'min:' . $settings->amount_minimum, 'max:1000000' ],
-            'name' => [ 'required', 'max:32' ],
-            'message' => [ 'nullable', 'max:' . $settings->max_message_length ]
+            'amount' => ['required', 'numeric', 'min:' . $settings->amount_minimum, 'max:1000000'],
+            'name' => ['required', 'max:32'],
+            'message' => ['nullable', 'max:' . $settings->max_message_length]
         ]);
-        
+
         $data = $request->only(['amount', 'name', 'message']);
         $data['user_id'] = $user->id;
-        
+
         $result = Messages::create($data);
         return $result;
     }
-    
+
 }
