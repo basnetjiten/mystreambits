@@ -16,6 +16,7 @@
                         @lang('auth.home.title')
                     </h3><br>
                      @include('auth.links')
+
                 </div>
             </div>
             <div class="text-xs-center footer-copy">

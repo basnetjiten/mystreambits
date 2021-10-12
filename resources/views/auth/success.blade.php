@@ -3,7 +3,7 @@
 @section('css')
     <style>
         body {
-            background: #59438c;
+            background: #153944;
         }
         .spinner {
             position: fixed;

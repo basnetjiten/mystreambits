@@ -27,12 +27,12 @@ class CreateConfigurationsTable extends Migration
             // Name
             $insert[] = [
                 'key' => 'app.name',
-                'value' => 'Stream Tip'
+                'value' => 'OP Streamers'
             ];
             // Title
             $insert[] = [
                 'key' => 'app.title',
-                'value' => 'StreamTip'
+                'value' => 'OPstreamers'
             ];
             // TimeZone
             $insert[] = [
