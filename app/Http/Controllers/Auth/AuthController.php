@@ -19,7 +19,7 @@ class AuthController extends Controller
         $this->middleware('guest', ['except' => ['getLogout', 'getCheck', 'getSuccess']]);
 
         // Auth methods
-        $this->methods = ['google', 'twitch', 'mixer'];
+        $this->methods = ['google', 'twitch', 'mixer','facebook'];
         foreach ($this->methods as $key => $method) {
             if (config("auth.{$method}.status") == 'disabled')
                 unset($this->methods[$key]);

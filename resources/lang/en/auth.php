@@ -4,9 +4,10 @@ return [
         'title' => 'Please Sign In'
         ],
     'services' => [
-        'google' => 'Connect with YouTube',
+        'google' => 'Connect with Google',
         'twitch' => 'Connect with Twitch',
-        'mixer' => 'Connect with Mixer'
+        'mixer' => 'Connect with Mixer',
+        'facebook' => 'Connect with Facebook',
         ],
     'redirect' => 'Wait for redirect.',
     'messages' => [

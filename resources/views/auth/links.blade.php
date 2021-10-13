@@ -2,7 +2,13 @@
     {{-- Youtube --}}
     @if (config('auth.google.status') != 'disabled')
         <a class="btn btn-danger btn-block" href="{{ route('auth.redirect', ['slug' => 'google']) }}">
-            <i class="fa fa-youtube-play" aria-hidden="true"></i> @lang('auth.services.google')
+            <i class="fa fa-google" aria-hidden="true"></i> @lang('auth.services.google')
+        </a>
+    @endif
+    {{-- Facebook --}}
+    @if (config('auth.facebook.status') != 'disabled')
+        <a class="btn btn-primary btn-block" href="{{ route('auth.redirect', ['slug' => 'facebook']) }}">
+            <i class="fa fa-facebook" aria-hidden="true"></i> @lang('auth.services.facebook')
         </a>
     @endif
     {{-- Twitch --}}
