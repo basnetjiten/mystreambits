@@ -21,7 +21,8 @@ class CreateMessagesTable extends Migration
             $table->mediumText('message')->nullable();
             $table->string('name')->nullable();
             $table->string('billing_system')->nullable();
-            $table->enum('status', ['wait', 'success', 'user', 'refund'])->default('wait');
+            $table->enum('status', ['wait', 'success', 'user'])->default('wait');
+            $table->enum('invoice_status', ['paid', 'unpaid'])->default('unpaid');
             $table->enum('view_status', ['true', 'false'])->default('false');
             $table->timestamps();
             $table->softDeletes();
