@@ -11,7 +11,7 @@ class Messages extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'id', 'user_id', 'amount', 'commission', 'message', 'name', 'billing_system', 'billing_data', 'status', 'view_status', 'updated_at'
+        'id', 'donator_id', 'user_id', 'amount', 'commission', 'message', 'name', 'billing_system', 'billing_data', 'status', 'view_status', 'updated_at'
     ];
     
     public static function smileys($message) {

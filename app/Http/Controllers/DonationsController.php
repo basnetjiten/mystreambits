@@ -108,12 +108,28 @@ class DonationsController extends Controller
             'name' => ['required', 'max:32'],
             'message' => ['nullable', 'max:' . $settings->max_message_length]
         ]);
+        $data['donator_id']= donatorID();
+
 
         $data = $request->only(['amount', 'name', 'message']);
         $data['user_id'] = $user->id;
 
         $result = Messages::create($data);
         return $result;
+    }
+
+    public function donatorID()
+    {
+
+        $unique = str_random(8);
+
+        $check = Messages::where('donator_id', $unique)->first();
+
+        if ($check) {
+            return $this->donatorID();
+        }
+
+        return $unique;
     }
 
 }

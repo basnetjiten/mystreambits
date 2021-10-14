@@ -16,6 +16,7 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->string('donator_id')->nullable();
             $table->float('amount', 10, 2);
             $table->float('commission', 10, 2)->default(0);
             $table->mediumText('message')->nullable();

@@ -80,9 +80,12 @@
                 {{-- Methods --}}
                 <div class="list-group payment-methods">
                     {{-- PayPal --}}
-                    @if(config('paypal.status') == 'enabled' && $settings->paypal != '')
+                    {{--@if(config('paypal.status') == 'enabled' /*&& $settings->paypal != ''*/)--}}
                         @include('donations.elements.paypal')
-                    @endif
+                        @include('donations.elements.esewa')
+                        @include('donations.elements.khalti')
+                        @include('donations.elements.imepay')
+                   {{-- @endif--}}
                 </div>
             </div>
         </div>
@@ -153,9 +156,12 @@
                         $('#payForm').fadeIn('slow');
                         $('.total-span').text(number_format(data.amount, 2, '.', ''));
                         $('.payment-methods a').each(function() {
+
                             $(this).attr('href', $(this).attr('default-href').replace('0000', data.id));
+                            $(this).attr('href', $(this).attr('default-href').replace('donator_id', data.donator_id));
                         });
                     }
+
                 },
                 error: function(data) { error_notify(data.responseJSON); }
             }); 
