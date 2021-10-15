@@ -86,16 +86,18 @@
         </div>
         <div class="modal-body">
             {{-- Donor Name --}}
-            <div class="form-group">
-                {!! Form::label('name', trans('Hello Streamers you are going to raise invoice from your earnings')) !!}
-            </div>
 
+            <p><b>You are going to raise invoice as a payment process. We might require 2/3 business days to verify and
+                    release the fund for you.</b><br>
+            <p>Thank you for choosing us.</p>
+            <p><small><i>*Donation are subjected to TDS and taxation.</i></small></p>
+        </div>
         <div class="modal-footer">
             {{-- Cancel --}}
             <button type="button" class="btn btn-default"
                     data-dismiss="modal">@lang('donations.home.create.cancel')</button>
             {{-- Submit --}}
-            {!! Form::submit(trans('donations.home.create.save'), ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit(trans('Request'), ['class' => 'btn btn-primary']) !!}
         </div>
         {!! Form::close() !!}
     </div>

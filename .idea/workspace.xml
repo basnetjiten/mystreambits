@@ -266,13 +266,12 @@
       <file leaf-file-name="home.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/donations/home.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="92" column="11" selection-start-line="92" selection-start-column="11" selection-end-line="92" selection-end-column="11" />
+            <state relative-caret-position="107">
+              <caret line="90" column="87" selection-start-line="90" selection-start-column="87" selection-end-line="90" selection-end-column="87" />
               <folding>
                 <element signature="e#828#3391#0#HTML" />
                 <element signature="e#1317#1324#1#HTML" expanded="true" />
                 <element signature="e#3949#3956#1#HTML" expanded="true" />
-                <element signature="e#4209#4451#0#HTML" />
                 <element signature="e#7192#7617#0#HTML" />
                 <element signature="e#10167#10592#0#HTML" />
               </folding>
@@ -701,12 +700,12 @@
       <workItem from="1634090082882" duration="47910000" />
       <workItem from="1634214723995" duration="11157000" />
       <workItem from="1634230713905" duration="1722000" />
-      <workItem from="1634267929855" duration="13589000" />
+      <workItem from="1634267929855" duration="15199000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="166567000" />
+    <option name="totallyTimeSpent" value="168177000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="10" width="1297" height="712" extended-state="0" />
@@ -718,8 +717,8 @@
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.5588752" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49795586" weight="0.15934066" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.036734693" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49795586" visible="true" weight="0.1923077" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.036734693" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32864675" />
@@ -1115,13 +1114,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/donations/home.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="92" column="11" selection-start-line="92" selection-start-column="11" selection-end-line="92" selection-end-column="11" />
+        <state relative-caret-position="107">
+          <caret line="90" column="87" selection-start-line="90" selection-start-column="87" selection-end-line="90" selection-end-column="87" />
           <folding>
             <element signature="e#828#3391#0#HTML" />
             <element signature="e#1317#1324#1#HTML" expanded="true" />
             <element signature="e#3949#3956#1#HTML" expanded="true" />
-            <element signature="e#4209#4451#0#HTML" />
             <element signature="e#7192#7617#0#HTML" />
             <element signature="e#10167#10592#0#HTML" />
           </folding>
