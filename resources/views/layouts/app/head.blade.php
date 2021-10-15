@@ -7,15 +7,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/css/vendor.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/vendor/bootstrap-colorpicker-master/css/bootstrap-colorpicker.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.min.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ asset('assets/vendor/bootstrap-colorpicker-master/css/bootstrap-colorpicker.min.css') }}"
+          rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/vendor/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css"/>
-@endsection
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
+    @endsection
 @yield('head')
 
 <!--[if lt IE 9]>
+
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-@yield('css')
+    <![endif]-->
+    @yield('css')

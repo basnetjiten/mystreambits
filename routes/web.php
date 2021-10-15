@@ -55,6 +55,19 @@
         Route::get('/payments/paypal/redirect/{id}', ['uses' => 'Payments\PayPalController@getRedirect', 'as' => 'payments.paypal.redirect'])->where(['id' => '[0-9]+']);
         Route::any('/payments/paypal/notify', ['uses' => 'Payments\PayPalController@anyNotify', 'as' => 'payments.paypal.notify']);
     }
+
+    /* ESEWA */ {
+        Route::get('/payments/esewa/redirect/{id}', ['uses' => 'Payments\EsewaPayController@esewaPaymentInitiator', 'as' => 'payments.esewa.redirect'])->where(['id' => '[0-9]+']);
+       // Route::any('/payments/esewa/notify', ['uses' => 'Payments\EsewaPayController@anyNotify', 'as' => 'payments.paypal.notify']);
+    }
+
+    /* KHALTI */ {
+        Route::post('/payments/khalti/redirect', ['uses' => 'Payments\KhaltiPayController@khaltiVerification', 'as' => 'payments.khalti.redirect']);
+    }
+
+    /* IMEPAY */ {
+        Route::post('/payments/imepay/redirect', ['uses' => 'Payments\ImePayController@imePayProcess']);
+    }
 }
 
 /* Widets */ {

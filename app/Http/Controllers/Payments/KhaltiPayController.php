@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Payments;
 
-use App\Jobs\ProcessDonation;
-use App\Models\Transaction;
+use App\Jobs\ProcessDonationMessage;
+use App\Messages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\Controller;
 
 class KhaltiPayController extends Controller
 {
     //performs client payment verification obtained from khalti payload
-    public function khaltiClientPayment(Request $request)
+    public function khaltiVerification(Request $request)
     {
         //argument obtained from khalti success payload
         $args = http_build_query(array(
@@ -26,8 +27,8 @@ class KhaltiPayController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $args);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        //test_secret_key_70b1a031600a45debf6fa5ed858165b7
-        $khaltiSecretKey = Config::get('services.khalti.key');
+        //test_public_key_dc74e0fd57cb46cd93832aee0a390234
+        $khaltiSecretKey ="test_public_key_dc74e0fd57cb46cd93832aee0a390234"; /*Config::get('services.khalti.key');*/
         $headers = ["Authorization: {$khaltiSecretKey}"];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -44,22 +45,28 @@ class KhaltiPayController extends Controller
 
             //get the transaction associated with donors mobile number
             //whose token is unverified
-            $transaction = Transaction::where('phone', $khaltiResponse->user->mobile)
-                ->where('token', 'unverified')
+            $message = Messages::where('phone', $request->donator_id)
+                ->where('invoice_status', 'unpaid')
                 ->latest()
                 ->first();
             //update the transaction field with all the verified data from khalti server
-            $transaction->amount = $khaltiResponse->amount / 100;
-            $transaction->token = $request->token;
-            $transaction->pay_type = "khalti";
-            $transaction->message = $request['message'];
-            $transaction->donation_status = $khaltiResponse->state->name;
-            $saved = $transaction->save();
+            $message->amount = $khaltiResponse->amount / 100;
+            $message->token = $request->token;
+            $message->billing_system = "khalti";
+            $message->status='success';
+            $saved = $message->save();
 
             //if successfully stored in our database
             //dispatch the broadcast notification
             if ($saved) {
-                ProcessDonation::dispatch($transaction)->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                if ($message != null) {
+                    ProcessDonationMessage::dispatch($message, 'liveAlert')->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                    return response()->json(['success' => trans('donations.create.success')]);
+                }
+                return response()->json(['error' => trans('donations.create.error')]);
+                //ProcessDonation::dispatch($message,'liveAlert')->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                //return redirect('/')->with('toast_success', 'payment successful');
+
             }
         } else abort('404');
 

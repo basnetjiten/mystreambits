@@ -35,10 +35,23 @@ return [
         'client_secret' => env('YOUTUBE_CLIENT_SECRET'),
         'redirect' => 'http://127.0.0.1:8000/auth/google/callback'
     ],
-    'facebook' =>[
+    'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => 'https://aeec-163-47-148-175.ngrok.io/auth/facebook/callback'
-    ]
+    ],
+
+
+    'khalti' => [
+        'key' => env('KHALTI_LIVE_SECRET_KEY'),
+    ],
+
+    'esewa' => [
+        'key' => env('ESEWA_LIVE_SECRET_KEY'),
+    ],
+    'ime' => [
+        'username' => env('IME_USERNAME'),
+        'pass' => env('IME_PASSWORD'),
+    ],
 
 ];
