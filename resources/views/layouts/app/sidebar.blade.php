@@ -16,7 +16,7 @@
                     <a href="#">@lang('sidebar.account.title')</a>
                     <ul class="nav nav-second-level in">
                         <li><a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> @lang('sidebar.account.dashboard')</a></li>
-                        <li><a href="{{ route('donations') }}"><i class="fa fa-comment-o fa-fw"></i> @lang('sidebar.account.donations')</a></li>
+                        <li><a href="{{ route('donations') }}"><i class="fa fa-money fa-fw"></i> @lang('sidebar.account.donations')</a></li>
                     </ul>
                 </li>
                 {{-- Settings --}}
