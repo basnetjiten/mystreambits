@@ -6,7 +6,8 @@ return [
     'account' => [
         'title' => 'My account',
         'dashboard' => 'Dashboard',
-        'donations' => 'My Donations'
+        'donations' => 'My Donations',
+        'invoices' => 'My Invoices'
         ],
     'settings' => [
         'title' => 'Settings',

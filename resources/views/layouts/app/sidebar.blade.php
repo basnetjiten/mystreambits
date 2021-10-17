@@ -17,6 +17,7 @@
                     <ul class="nav nav-second-level in">
                         <li><a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> @lang('sidebar.account.dashboard')</a></li>
                         <li><a href="{{ route('donations') }}"><i class="fa fa-money fa-fw"></i> @lang('sidebar.account.donations')</a></li>
+                        <li><a href="{{ route('invoices') }}"><i class="fa fa-book fa-fw"></i> @lang('sidebar.account.invoices')</a></li>
                     </ul>
                 </li>
                 {{-- Settings --}}
@@ -45,6 +46,7 @@
                             <li><a href="{{ route('apanel.configurations') }}"><i class="fa fa-sliders fa-fw" aria-hidden="true"></i> @lang('sidebar.apanel.configurations')</a></li>
                             <li><a href="{{ route('apanel.donations') }}"><i class="fa fa-comment-o fa-fw" aria-hidden="true"></i> @lang('sidebar.apanel.donations')</a></li>
                             <li><a href="{{ route('apanel.users') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> @lang('sidebar.apanel.users')</a></li>
+                            <li><a href="{{ route('apanel.invoices') }}"><i class="fa fa-book fa-fw" aria-hidden="true"></i> @lang('sidebar.apanel.users')</a></li>
                         </ul>
                     </li>
                 @endif

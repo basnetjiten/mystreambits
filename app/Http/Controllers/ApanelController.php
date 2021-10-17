@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,15 +18,21 @@ use App\Configuration;
 
 class ApanelController extends Controller
 {
-    
+
     var $view = [];
 
     public function __construct()
     {
         $this->middleware('admin');
     }
-
-    
+    /**
+     * Configurations
+     */
+    public function getInvoices()
+    {
+        $this->view['title'] = trans('invoice.invoice.title');
+        return view('apanel.invoices', $this->view);
+    }
     /**
      * Configurations
      */
@@ -35,14 +42,14 @@ class ApanelController extends Controller
         $this->view['data'] = [];
         foreach ($configs as $config)
             $this->view['data'][$config->key] = $config->value;
-        
+
         $this->view['title'] = trans('apanel.configurations.title');
         return view('apanel.configurations', $this->view);
     }
-    
+
     public function postConfigurations(Request $request)
     {
-        
+
         $configurations = $request->all();
         foreach ($configurations as $key => $val) {
             if (base64_encode(base64_decode($key)) !== $key)
@@ -54,31 +61,31 @@ class ApanelController extends Controller
             Configuration::where('key', $key)->update(['value' => $val]);
         }
         Configuration::reload();
-        return response()->json(['success'=> trans('apanel.configurations.success')]);
+        return response()->json(['success' => trans('apanel.configurations.success')]);
     }
-    
-    
+
+
     /**
      * Statistics
      */
 
     public function getStatistics()
     {
-        
+
         /* Lat week messages */
         $messages = Messages::withTrashed()
-                            ->select('updated_at', 'amount', 'commission')
-                            ->where('status', 'success')
-                            ->where('updated_at', '>=', Carbon::now()->subWeek()->startOfDay())
-                            ->where('updated_at', '<=', Carbon::now())
-                            ->get();
-        
+            ->select('updated_at', 'amount', 'commission')
+            ->where('status', 'success')
+            ->where('updated_at', '>=', Carbon::now()->subWeek()->startOfDay())
+            ->where('updated_at', '<=', Carbon::now())
+            ->get();
+
         // Days
         for (
-            $date = Carbon::now()->subWeek()->startOfDay()->setTimezone(Auth::user()->timezone); 
-            $date->lte(Carbon::now()->setTimezone(Auth::user()->timezone)); 
+            $date = Carbon::now()->subWeek()->startOfDay()->setTimezone(Auth::user()->timezone);
+            $date->lte(Carbon::now()->setTimezone(Auth::user()->timezone));
             $date->addDay()
-            ) {
+        ) {
             $messageDates[] = $date->toDateString();
             $messageStatistics['amount'][$date->toDateString()] = 0;
             $messageStatistics['commission'][$date->toDateString()] = 0;
@@ -96,7 +103,7 @@ class ApanelController extends Controller
             'amount' => array_values($messageStatistics['amount']),
             'commission' => array_values($messageStatistics['commission'])
         ];
-        
+
         /* Count messages */
         $this->view['counters']['paid_messages'] = Messages::where('status', 'success')->count();
         $this->view['counters']['messages'] = Messages::count();
@@ -106,11 +113,11 @@ class ApanelController extends Controller
         $this->view['counters']['amount_refunds'] = Messages::withTrashed()->where('status', 'refund')->sum('amount');
         $this->view['counters']['users'] = User::count();
         $this->view['counters']['today_users'] = User::where('created_at', '>=', Carbon::today())->count();
-        
+
         $this->view['title'] = trans('apanel.statistics.title');
         return view('apanel.statistics', $this->view);
     }
-    
+
     /**
      * Donations
      */
@@ -119,7 +126,7 @@ class ApanelController extends Controller
         $this->view['title'] = trans('apanel.donations.title');
         return view('apanel.donations', $this->view);
     }
-    
+
     public function getDonationsData()
     {
         return DataTables::eloquent(Messages::select(['updated_at', 'user_id', 'name', 'amount', 'commission', 'message', 'id', 'status', 'billing_system'])->withTrashed()->whereIn('status', ['success', 'refund']))
@@ -142,7 +149,7 @@ class ApanelController extends Controller
                 return '<a href="' . route("apanel.users.edit", ["id" => $data->user_id]) . '">' . $user->name . '</a>';
             })->toJson();
     }
-    
+
     /**
      * Users
      */
@@ -151,7 +158,7 @@ class ApanelController extends Controller
         $this->view['title'] = trans('apanel.users.title');
         return view('apanel.users', $this->view);
     }
-    
+
     public function getUsersData()
     {
         try {
@@ -166,16 +173,16 @@ class ApanelController extends Controller
         } catch (\Exception $e) {
         }
     }
-    
+
     public function getUsersEdit(Request $request, $id)
     {
         $this->view['user'] = User::where('id', $id)->first();
         if (!$this->view['user'])
             abort(404);
-        $this->view['title'] = trans('apanel.users.edit.title', [ 'id' => $this->view['user']->id ]);
+        $this->view['title'] = trans('apanel.users.edit.title', ['id' => $this->view['user']->id]);
         return view('apanel.users_edit', $this->view);
     }
-    
+
     public function postUsersEdit(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
@@ -184,19 +191,57 @@ class ApanelController extends Controller
 
         $this->validate($request, [
             //'balance' => [ 'required', 'numeric', 'min:0', 'max:1000000' ],
-            'name' => [ 'required', 'max:64' ],
-            'level' => [ 'required', 'in:admin,user' ],
-            'email' => [ 'nullable', 'email' ],
-            'timezone' => [ 'required', 'timezone' ],
+            'name' => ['required', 'max:64'],
+            'level' => ['required', 'in:admin,user'],
+            'email' => ['nullable', 'email'],
+            'timezone' => ['required', 'timezone'],
             'smiles' => ['required', 'in:true,false'],
             'links' => ['required', 'in:true,false'],
-            'token' => [ 'required' ],
+            'token' => ['required'],
         ]);
-        
-        $data = $request->only([/*'balance',*/ 'name', 'level', 'email', 'timezone', 'smiles', 'links', 'token', 'black_list_words']);
-        
+
+        $data = $request->only([/*'balance',*/
+            'name', 'level', 'email', 'timezone', 'smiles', 'links', 'token', 'black_list_words']);
+
         $user->update($data);
-        return response()->json(['success'=> trans('settings.account.success')]);
+        return response()->json(['success' => trans('settings.account.success')]);
     }
-    
+
+    public function getRequestedInvoices()
+    {
+        return DataTables::eloquent(Invoices::select(['user_id','updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status',['processing']))
+            ->editColumn('updated_at', function ($data) {
+                return ($data->updated_at->format('d M Y'));            })->editColumn('amount', function ($data) {
+                return number_format($data->amount, 2, '.', '');
+            })->editColumn('commission_amount', function ($data) {
+                return number_format($data->commission, 2, '.', '');
+            })->editColumn('invoice_status', function ($data) {
+                return $data->invoice_status;
+            })->editColumn('invoice_id', function ($data) {
+                return $data->invoice_id;
+            })->editColumn('name', function ($data) {
+                return User::find($data->user_id)->first()->name;
+            })->toJson();
+
+    }
+    public function getPaidInvoices()
+    {
+
+        return DataTables::eloquent(Invoices::select(['user_id','updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status',['paid']))
+            ->editColumn('updated_at', function ($data) {
+                return ($data->updated_at->format('d M Y'));
+            })->editColumn('amount', function ($data) {
+                return number_format($data->amount, 2, '.', '');
+            })->editColumn('commission_amount', function ($data) {
+                return number_format($data->commission, 2, '.', '');
+            })->editColumn('invoice_status', function ($data) {
+                return $data->invoice_status;
+            })->editColumn('invoice_id', function ($data) {
+                return $data->invoice_id;
+            })->editColumn('name', function ($data) {
+                return User::find($data->user_id)->first()->name;
+            })->toJson();
+
+    }
+
 }

@@ -91,6 +91,14 @@
         Route::get('/widgets/donationgoal/{token}', ['uses' => 'Widgets\DonationgoalController@getWidget', 'as' => 'widgets.donationgoal.widget'])->where(['token' => '[A-Za-z0-9]+']);
         Route::get('/widgets/donationgoal/{token}/get', ['uses' => 'Widgets\DonationgoalController@getWidgetData', 'as' => 'widgets.donationgoal.widget.get'])->where(['token' => '[A-Za-z0-9]+']);
     }
+
+    /*Invoices */
+    Route::get('/invoices/invoices', ['uses' => 'InvoiceController@getInvoices', 'as' => 'invoices']);
+    Route::post('/invoices/raise/invoice', ['uses' => 'InvoiceController@raiseInvoice', 'as' => 'invoice.create']);
+    Route::get('/invoices/data', ['uses' => 'InvoiceController@getData', 'as' => 'invoices.data']);
+
+
+
 }
 
 /* Pages */ {
@@ -129,6 +137,13 @@
         Route::get('/apanel/payouts/settings', ['uses' => 'ApanelController@getPayoutsSettings', 'as' => 'apanel.payouts.settings']);
         Route::post('/apanel/payouts/settings/save', ['uses' => 'ApanelController@postPayoutsSettings', 'as' => 'apanel.payouts.settings.save']);
         Route::post('/apanel/payouts/settings/remove', ['uses' => 'ApanelController@postPayoutsSettingsRemove', 'as' => 'apanel.payouts.settings.remove']);
+    }
+
+
+    /* Payouts */ {
+        Route::get('/apanel/invoices', ['uses' => 'ApanelController@getInvoices', 'as' => 'apanel.invoices']);
+        Route::get('/apanel/invoices/request/data', ['uses' => 'ApanelController@getRequestedInvoices', 'as' => 'apanel.requested.invoices']);
+        Route::get('/apanel/invoices/paid/data', ['uses' => 'ApanelController@getPaidInvoices', 'as' => 'apanel.paid.invoices']);
     }
     /* Terms & Conditions */ {
         Route::get('/apanel/conditions', ['uses' => 'ApanelController@getConditions', 'as' => 'apanel.conditions']);

@@ -3,12 +3,12 @@ return [
     // Home
     'home' => [
         'title' => 'My Donations',
-        'updated_at' => 'When',
+        'updated_at' => 'Date',
         'name' => 'Donor',
         'amount' => 'Amount',
         'message' => 'Message',
         'status' => 'Status',
-        'billing_system' => 'Payment Method',
+        'billing_system' => 'Source',
         'statuses' => [
             'success' => 'Success',
             'refund' => 'Refunded',
@@ -16,7 +16,7 @@ return [
         ],
         'create' => [
             'title' => 'Add a Donation',
-            'cancel' => 'Cancel',
+            'close' => 'Close',
             'save' => 'Save donation',
             'name' => 'Donor Name',
             'message' => 'Donation Message',
