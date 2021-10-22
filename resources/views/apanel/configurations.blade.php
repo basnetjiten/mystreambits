@@ -42,6 +42,11 @@
                                 @lang('apanel.configurations.payments.title')
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#configurations-esewa-payments" class="nav-link" data-toggle="tab" aria-expanded="false">
+                                @lang('Esewa')
+                            </a>
+                        </li>
                         {{-- Other --}}
                         <li class="nav-item">
                             <a href="#configurations-other" class="nav-link" data-toggle="tab" aria-expanded="false">
@@ -198,6 +203,110 @@
                                 </tbody>
                             </table>
                             
+                        </div>
+
+                        {{-- ESEWA PAYMENTS --}}
+                        <div class="tab-pane fade" id="configurations-esewa-payments">
+                            {{-- PayPal --}}
+                            <h4>Esewa</h4>
+                            <div class="alert alert-info alert-dismissable">
+                                @lang('ESEWA CONFIGURATION')
+                            </div>
+                            <table id="user" class="table table-bordered table-striped" style="clear: both">
+                                <tbody>
+                                {{-- Basic Settings --}}
+                                <tr>
+                                    <td colspan="2"><b>@lang('apanel.configurations.keys.esewa_basic')</b></td>
+                                </tr>
+                                {{-- Status --}}
+                                <tr>
+                                    <td width="35%">
+                                        @lang(tpatch('esewa.status'))
+                                    </td>
+                                    <td width="65%">
+                                        {!! Form::select(base64_encode('esewa.status'), ['enabled' => 'enabled', 'disabled' => 'disabled'], ($configurations('esewa.status'))['esewa.status'], [ 'class' => 'form-control selectpicker' ]) !!}
+                                    </td>
+                                </tr>
+                                {{-- Mode --}}
+                                <tr>
+                                    <td width="35%">
+                                        @lang(tpatch('esewa.mode'))
+                                    </td>
+                                    <td width="65%">
+                                        {!! Form::select(base64_encode('esewa.mode'), ['sandbox' => 'sandbox', 'live' => 'live'], ($configurations('esewa.mode'))['esewa.mode'], [ 'class' => 'form-control selectpicker' ]) !!}
+                                    </td>
+                                </tr>
+                                {{-- Notify URL --}}
+                                {{--<tr>
+                                    <td width="35%">
+                                        @lang(tpatch('esewa.notify_url'))
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="{{ trans(tpatch('esewa.notify_url')) }}" data-content="{{ route('esewa.paypal.notify') }}" style="cursor: pointer;"></i>
+                                    </td>
+                                    <td width="65%">
+                                        {!! Form::text(base64_encode('esewa.notify_url'), ($configurations('esewa.notify_url'))['esewa.notify_url'], [ 'class' => 'form-control' ]) !!}
+                                    </td>
+                                </tr>--}}
+                                {{-- Commission --}}
+                                <tr>
+                                    <td width="35%">
+                                        @lang(tpatch('esewa.commission'))
+                                    </td>
+                                    <td width="65%">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                                            {!! Form::text(base64_encode('esewa.commission'), ($configurations('esewa.commission'))['esewa.commission'], [ 'class' => 'form-control' ]) !!}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{-- Currency --}}
+                                <tr>
+                                    <td width="35%">
+                                        @lang(tpatch('esewa.currency'))
+                                    </td>
+                                    <td width="65%">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">{!! config('app.currency_icon') !!}</span>
+                                            {!! Form::text(base64_encode('esewa.currency'), ($configurations('esewa.currency'))['esewa.currency'], [ 'class' => 'form-control' ]) !!}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{-- Sandbox --}}
+                                <tr>
+                                    <td colspan="2"><b>@lang('apanel.configurations.keys.esewa_sandbox')</b></td>
+                                </tr>
+                                @foreach ($configurations('esewa.sandbox.') as $key => $value)
+                                    <tr>
+                                        <td width="35%">
+                                            @lang(tpatch($key))
+                                            @if (trans(tpatch($key . '_info')) != tpatch($key . '_info'))
+                                                <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="@lang(tpatch($key))" data-content="{{ trans(tpatch($key . '_info')) }}" style="cursor: pointer;"></i>
+                                            @endif
+                                        </td>
+                                        <td width="65%">
+                                            {!! Form::text(base64_encode($key), $value, [ 'class' => 'form-control' ]) !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                {{-- Live --}}
+                                <tr>
+                                    <td colspan="2"><b>@lang('apanel.configurations.keys.esewa_live')</b></td>
+                                </tr>
+                                @foreach ($configurations('esewa.live.') as $key => $value)
+                                    <tr>
+                                        <td width="35%">
+                                            @lang(tpatch($key))
+                                            @if (trans(tpatch($key . '_info')) != tpatch($key . '_info'))
+                                                <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="@lang(tpatch($key))" data-content="{{ trans(tpatch($key . '_info')) }}" style="cursor: pointer;"></i>
+                                            @endif
+                                        </td>
+                                        <td width="65%">
+                                            {!! Form::text(base64_encode($key), $value, [ 'class' => 'form-control' ]) !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+
                         </div>
                         {{-- Other --}}
                         <div class="tab-pane fade" id="configurations-other">

@@ -39,7 +39,8 @@
         <div class="modal-dialog" role="document">
             {!! Form::open(['route' => 'donations.create', 'class' => 'modal-content form-horizontal', 'id' => 'donationCreateForm', 'autocomplete' => 'off']) !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title" id="donationCreateLabel">@lang('donations.home.create.title')</h4>
             </div>
             <div class="modal-body">
@@ -66,7 +67,8 @@
             </div>
             <div class="modal-footer">
                 {{-- Cancel --}}
-                <button type="button" class="btn btn-default" data-dismiss="modal">@lang('donations.home.create.close')</button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">@lang('donations.home.create.close')</button>
                 {{-- Submit --}}
                 {!! Form::submit(trans('donations.home.create.save'), ['class' => 'btn btn-primary']) !!}
             </div>
@@ -79,8 +81,8 @@
 @section('scripts')
     <script>
         var donationTable;
-        $(function() {
-var i=1;
+        $(function () {
+            var i = 1;
             donationTable = $('#donationTable').DataTable({
                 serverSide: true,
                 processing: true,
@@ -92,13 +94,14 @@ var i=1;
                 ajax: `{{ route('donations.data') }}`,
                 columns: [
                     {
-                        "render": function() {
+                        "render": function () {
                             return i++;
-                        }},
+                        }
+                    },
                     {
                         data: "status",
                         sortable: true,
-                        render: function(data) {
+                        render: function (data) {
                             var statuses = JSON.parse(`{!! json_encode(trans('donations.home.statuses')) !!}`);
                             var color = 'muted';
                             if (data == 'success')
@@ -108,11 +111,11 @@ var i=1;
                             return `<span class="text-${color}">${statuses[data]}</span>`;
                         }
                     },
-                    { data: "billing_system" },
+                    {data: "billing_system"},
                     {
                         data: "name",
                         sortable: false,
-                        render: function(data) {
+                        render: function (data) {
                             return `<a href="#" onclick="donationTable.search($(this).text().trim()).draw();">${data}</a>`;
                         }
 
@@ -134,23 +137,27 @@ var i=1;
                             return htmlspecialchars_decode(data);
                         }
                     },
-                    {data:"updated_at"}
+                    {data: "updated_at"}
 
                 ]
             });
 
             $('#donationCreateForm').ajaxForm({
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     auto_notify(data);
                     if (typeof data.success != 'undefined') {
                         $('#donationCreate').modal('hide');
                         donationTable.ajax.reload();
                     }
                 },
-                error: function(data) { error_notify(data.responseJSON); }
+                error: function (data) {
+                    error_notify(data.responseJSON);
+                }
             });
-            $('#donationTable_length').append(`<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#donationCreate" style="margin: 0px 20px;">@lang('donations.home.create.title')</button>`);
+            /*
+                        $('#donationTable_length').append(`<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#donationCreate" style="margin: 0px 20px;">@lang('donations.home.create.title')</button>`);
+*/
         });
     </script>
 @endsection

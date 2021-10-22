@@ -25,14 +25,16 @@ class ApanelController extends Controller
     {
         $this->middleware('admin');
     }
+
     /**
-     * Configurations
+     * Invoices
      */
     public function getInvoices()
     {
         $this->view['title'] = trans('invoice.invoice.title');
         return view('apanel.invoices', $this->view);
     }
+
     /**
      * Configurations
      */
@@ -209,25 +211,7 @@ class ApanelController extends Controller
 
     public function getRequestedInvoices()
     {
-        return DataTables::eloquent(Invoices::select(['user_id','updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status',['processing']))
-            ->editColumn('updated_at', function ($data) {
-                return ($data->updated_at->format('d M Y'));            })->editColumn('amount', function ($data) {
-                return number_format($data->amount, 2, '.', '');
-            })->editColumn('commission_amount', function ($data) {
-                return number_format($data->commission, 2, '.', '');
-            })->editColumn('invoice_status', function ($data) {
-                return $data->invoice_status;
-            })->editColumn('invoice_id', function ($data) {
-                return $data->invoice_id;
-            })->editColumn('name', function ($data) {
-                return User::find($data->user_id)->first()->name;
-            })->toJson();
-
-    }
-    public function getPaidInvoices()
-    {
-
-        return DataTables::eloquent(Invoices::select(['user_id','updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status',['paid']))
+        return DataTables::eloquent(Invoices::select(['user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['processing']))
             ->editColumn('updated_at', function ($data) {
                 return ($data->updated_at->format('d M Y'));
             })->editColumn('amount', function ($data) {
@@ -241,6 +225,64 @@ class ApanelController extends Controller
             })->editColumn('name', function ($data) {
                 return User::find($data->user_id)->first()->name;
             })->toJson();
+
+    }
+
+    public function getPaidInvoices()
+    {
+
+        return DataTables::eloquent(Invoices::select(['user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['paid']))
+            ->editColumn('updated_at', function ($data) {
+                return ($data->updated_at->format('d M Y'));
+            })->editColumn('amount', function ($data) {
+                return number_format($data->amount, 2, '.', '');
+            })->editColumn('commission_amount', function ($data) {
+                return number_format($data->commission, 2, '.', '');
+            })->editColumn('invoice_status', function ($data) {
+                return $data->invoice_status;
+            })->editColumn('invoice_id', function ($data) {
+                return $data->invoice_id;
+            })->editColumn('name', function ($data) {
+                return User::find($data->user_id)->first()->name;
+            })->toJson();
+
+    }
+
+    public function generateInvoice(Request $request)
+    {
+        $userId = $request->id;
+        $user = User::find($userId);
+        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->first();
+        $image = base64_encode(file_get_contents(public_path('/img/logoo.jpg')));
+
+        $this->view['invoice'] = [
+            'img' => array_values($image),
+            'username' => array_values($user->name),
+            'email' => array_values($user->email),
+            'commission' => array_values($invoice->commission),
+            'amount' => array_values($invoice->amount),
+            'payments' => array_values($user->payment),
+            'id' => array_values($invoice->invoice_id),
+        ];
+
+
+        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('paid_invoice', $this->view['invoice']);
+        $pdf->setPaper('A5', 'portrait');
+        return $pdf->download($user->name . 'pdf');
+    }
+    public function updateInvoice(Request $request)
+    {
+        $userId = $request->id;
+
+        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->whereIn('invoice_status', ['processing'])->first();
+
+        $invoice->invoice_status='paid';
+        dd($invoice);
+        $invoice->save();
+
+        if($invoice)
+        return response()->json(['success' => trans('success')]);
+        return response()->json(['fail' => trans('failed')]);
 
     }
 

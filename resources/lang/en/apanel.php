@@ -51,7 +51,72 @@ return [
             'paypal_live_password' => 'Password (API)',
             'paypal_live_secret' => 'Secret (API)',
             'paypal_live_email' => 'Account for commission',
-            'paypal_live_app_id' => 'Application ID'
+            'paypal_live_app_id' => 'Application ID',
+
+            'esewa_commission' => 'Commission for each donation (%)',
+            'esewa_sandbox' => 'Sandbox',
+            'esewa_live' => 'Live',
+            'esewa_basic' => 'Basic Settings',
+            'esewa_status' => 'Status',
+            'esewa_mode' => 'Mode',
+            'esewa_currency' => 'Currency',
+            'esewa_notify_url' => 'Notify URL (For IPN)',
+            'esewa_sandbox_username' => 'Username (API)',
+            'esewa_sandbox_password' => 'Password (API)',
+            'esewa_sandbox_secret' => 'Secret (API)',
+            'esewa_sandbox_email' => 'Account for commission',
+            'esewa_live_username' => 'Username (API)',
+            'esewa_live_password' => 'Password (API)',
+            'esewa_live_secret' => 'Secret (API)',
+            'esewa_live_email' => 'Account for commission',
+            'esewa_live_app_id' => 'Application ID',
+
+
+
+            'khalti_commission' => 'Commission for each donation (%)',
+
+            'khalti_sandbox' => 'Sandbox',
+            'khalti_live' => 'Live',
+            'khalti_basic' => 'Basic Settings',
+            'khalti_status' => 'Status',
+            'khalti_mode' => 'Mode',
+            'khalti_currency' => 'Currency',
+            'khalti_notify_url' => 'Notify URL (For IPN)',
+            'khalti_sandbox_username' => 'Username (API)',
+            'khalti_sandbox_password' => 'Password (API)',
+            'khalti_sandbox_secret' => 'Secret (API)',
+            'khalti_sandbox_email' => 'Account for commission',
+            'khalti_live_username' => 'Username (API)',
+            'khalti_live_password' => 'Password (API)',
+            'khalti_live_secret' => 'Secret (API)',
+            'khalti_live_email' => 'Account for commission',
+            'khalti_live_app_id' => 'Application ID',
+
+
+            'imepay_commission' => 'Commission for each donation (%)',
+
+            'imepay_sandbox' => 'Sandbox',
+            'imepay_live' => 'Live',
+            'imepay_basic' => 'Basic Settings',
+            'imepay_status' => 'Status',
+            'imepay_mode' => 'Mode',
+            'imepay_currency' => 'Currency',
+            'imepay_notify_url' => 'Notify URL (For IPN)',
+            'imepay_sandbox_username' => 'Username (API)',
+            'imepay_sandbox_password' => 'Password (API)',
+            'imepay_sandbox_secret' => 'Secret (API)',
+            'imepay_sandbox_email' => 'Account for commission',
+            'imepay_live_username' => 'Username (API)',
+            'imepay_live_password' => 'Password (API)',
+            'imepay_live_secret' => 'Secret (API)',
+            'imepay_live_email' => 'Account for commission',
+            'imepay_live_app_id' => 'Application ID'
+
+
+
+
+
+
             
             
     

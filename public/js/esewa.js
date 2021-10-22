@@ -15,8 +15,8 @@ $('.esewa').on('click', function () {
         tAmt: 100,
         pid: 'ee2c3ca1-696b-4cc5-a6be-2c40d929d453',
         scd: 'EPAYTEST'/*process.env.MIX_ESEWA_LIVE_PUBLIC_KEY*/,
-        su: "https://streamersalert.com/esuccess?q=su",
-        fu: "https://streamersalert.com/efailure?q=su"
+        su: "http://127.0.0.1:8000/payments/esewa/success?q=su",
+        fu: "http://127.0.0.1:8000/payments/esewa/failed?q=fu"
     };
 
     function post(path, params) {

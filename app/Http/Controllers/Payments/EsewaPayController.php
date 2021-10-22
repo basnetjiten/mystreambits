@@ -62,25 +62,27 @@ class EsewaPayController extends Controller
     }
 
 
-    public function esewaClientTransaction(Request $request)
+    public function esewaSuccessPayment(Request $request)
     {
         //dd($request->oid.$request->amt.$request->refId);
         if (isset($request->oid) && isset($request->amt) && isset($request->refId)) {
             //get the transaction associated with donors mobile number
             //whose token is unverified
-            $message = Messages::where('pid', $request->oid)
+
+            $message = Messages::where('donator_id', $request->oid)
                 ->where('invoice_status', 'unpaid')
                 ->latest()
                 ->first();
 
-
+           // https://uat.esewa.com.np/epay/transrec
+            //https://esewa.com.np/epay/transrec
             if ($message) {
-                $url = "https://esewa.com.np/epay/transrec";
+                $url = "https://uat.esewa.com.np/epay/transrec";
                 $data = [
                     'amt' => $message->amount,
                     'rid' => $request->refId,
                     'pid' => $request->donator_id,
-                    'scd' => Config::get('services.esewa.key')
+                    'scd' => 'EPAYTEST'/*Config::get('services.esewa.key')*/
                 ];
 
                 $curl = curl_init($url);
@@ -92,7 +94,7 @@ class EsewaPayController extends Controller
 
 
                 $response_code = $this->get_xml_node_value('response_code', $response);
-                //dd($response_code);
+                dd($response_code);
                 if (trim($response_code) == 'Success') {
                     //update the transaction field with all the verified data from khalti server
 

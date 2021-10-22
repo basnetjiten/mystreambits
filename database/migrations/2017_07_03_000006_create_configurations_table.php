@@ -130,6 +130,220 @@ class CreateConfigurationsTable extends Migration
             
         }
 
+
+
+        /* Esewa */ {
+        // Mode: live or sandbox
+        $insert[] = [
+            'key'   => 'esewa.mode',
+            'value' => 'sandbox'
+        ];
+        // Commission
+        $insert[] = [
+            'key' => 'esewa.commission',
+            'value' => '15'
+        ];
+        // Status
+        $insert[] = [
+            'key' => 'esewa.status',
+            'value' => 'enabled'
+        ];
+        // Sandbox: email (For commission)
+        $insert[] = [
+            'key'   => 'esewa.sandbox.email',
+            'value' => ''
+        ];
+        // Sandbox: username
+        $insert[] = [
+            'key'   => 'esewa.sandbox.username',
+            'value' => ''
+        ];
+        // Sandbox: password
+        $insert[] = [
+            'key'   => 'esewa.sandbox.password',
+            'value' => ''
+        ];
+        // Sandbox: secret
+        $insert[] = [
+            'key'   => 'esewa.sandbox.secret',
+            'value' => ''
+        ];
+        // Live: email (For commission)
+        $insert[] = [
+            'key'   => 'esewa.live.email',
+            'value' => ''
+        ];
+        // Live: username
+        $insert[] = [
+            'key'   => 'esewa.live.username',
+            'value' => ''
+        ];
+        // Live: password
+        $insert[] = [
+            'key'   => 'esewa.live.password',
+            'value' => ''
+        ];
+        // Live: app_id
+        $insert[] = [
+            'key'   => 'esewa.live.app_id',
+            'value' => ''
+        ];
+        // Currency
+        $insert[] = [
+            'key'   => 'esewa.currency',
+            'value' => 'RS'
+        ];
+        // Notify URL
+        $insert[] = [
+            'key'   => 'esewa.notify_url',
+            'value' => 'https://you.domain/payments/paypal/notify'
+        ];
+
+    }
+
+
+
+
+        /* KHALTI */ {
+        // Mode: live or sandbox
+        $insert[] = [
+            'key'   => 'khalti.mode',
+            'value' => 'sandbox'
+        ];
+        // Commission
+        $insert[] = [
+            'key' => 'khalti.commission',
+            'value' => '15'
+        ];
+        // Status
+        $insert[] = [
+            'key' => 'khalti.status',
+            'value' => 'enabled'
+        ];
+        // Sandbox: email (For commission)
+        $insert[] = [
+            'key'   => 'khalti.sandbox.email',
+            'value' => ''
+        ];
+        // Sandbox: username
+        $insert[] = [
+            'key'   => 'khalti.sandbox.username',
+            'value' => ''
+        ];
+        // Sandbox: password
+        $insert[] = [
+            'key'   => 'khalti.sandbox.password',
+            'value' => ''
+        ];
+        // Sandbox: secret
+        $insert[] = [
+            'key'   => 'khalti.sandbox.secret',
+            'value' => ''
+        ];
+        // Live: email (For commission)
+        $insert[] = [
+            'key'   => 'khalti.live.email',
+            'value' => ''
+        ];
+        // Live: username
+        $insert[] = [
+            'key'   => 'khalti.live.username',
+            'value' => ''
+        ];
+        // Live: password
+        $insert[] = [
+            'key'   => 'khalti.live.password',
+            'value' => ''
+        ];
+        // Live: app_id
+        $insert[] = [
+            'key'   => 'khalti.live.app_id',
+            'value' => ''
+        ];
+        // Currency
+        $insert[] = [
+            'key'   => 'khalti.currency',
+            'value' => 'RS'
+        ];
+        // Notify URL
+        $insert[] = [
+            'key'   => 'khalti.notify_url',
+            'value' => 'https://you.domain/payments/paypal/notify'
+        ];
+
+    }
+
+
+
+        /* IMEPAY */ {
+        // Mode: live or sandbox
+        $insert[] = [
+            'key'   => 'imepay.mode',
+            'value' => 'sandbox'
+        ];
+        // Commission
+        $insert[] = [
+            'key' => 'imepay.commission',
+            'value' => '15'
+        ];
+        // Status
+        $insert[] = [
+            'key' => 'imepay.status',
+            'value' => 'enabled'
+        ];
+        // Sandbox: email (For commission)
+        $insert[] = [
+            'key'   => 'imepay.sandbox.email',
+            'value' => ''
+        ];
+        // Sandbox: username
+        $insert[] = [
+            'key'   => 'imepay.sandbox.username',
+            'value' => ''
+        ];
+        // Sandbox: password
+        $insert[] = [
+            'key'   => 'imepay.sandbox.password',
+            'value' => ''
+        ];
+        // Sandbox: secret
+        $insert[] = [
+            'key'   => 'imepay.sandbox.secret',
+            'value' => ''
+        ];
+        // Live: email (For commission)
+        $insert[] = [
+            'key'   => 'imepay.live.email',
+            'value' => ''
+        ];
+        // Live: username
+        $insert[] = [
+            'key'   => 'imepay.live.username',
+            'value' => ''
+        ];
+        // Live: password
+        $insert[] = [
+            'key'   => 'imepay.live.password',
+            'value' => ''
+        ];
+        // Live: app_id
+        $insert[] = [
+            'key'   => 'imepay.live.app_id',
+            'value' => ''
+        ];
+        // Currency
+        $insert[] = [
+            'key'   => 'imepay.currency',
+            'value' => 'RS'
+        ];
+        // Notify URL
+        $insert[] = [
+            'key'   => 'imepay.notify_url',
+            'value' => 'https://you.domain/payments/paypal/notify'
+        ];
+
+    }
+
         /* Auth */ {
             // Default Avatar
             $insert[] = [

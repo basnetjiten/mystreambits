@@ -120,13 +120,56 @@
 
                     {data: "amount"},
                     {data: "commission_amount"},
-                    {data: "updated_at"}
+                    {data: "updated_at"},
+
+                    {
+                        data: "id",
+                        render: function (data, type, full, meta) {
+                            setTimeout(function () {
+                                $('#message-delete-' + data).ajaxForm({
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        auto_notify(data);
+                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
+                                    },
+                                    error: function (data) {
+                                        error_notify(data.responseJSON);
+                                    }
+                                });
+                            }, 500);
+                            return `{!! Form::open(['route' => 'apanel.invoice.generate', 'id' => 'message-delete-@{{ id }}']) !!}
+                                    {!! Form::hidden('id', '@{{ id }}') !!}
+                                    {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
+                                    {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, full, meta) {
+                            setTimeout(function () {
+                                $('#message-delete-' + data).ajaxForm({
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        auto_notify(data);
+                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
+                                    },
+                                    error: function (data) {
+                                        error_notify(data.responseJSON);
+                                    }
+                                });
+                            }, 500);
+                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'id' => 'message-delete-@{{ id }}']) !!}
+                                    {!! Form::hidden('id', '@{{ id }}') !!}
+                                    {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
+                                    {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
+                        }
+                    }
 
                 ]
             });
 
 
-        };
+        }
         $(function () {
             onTabSelected();
         });

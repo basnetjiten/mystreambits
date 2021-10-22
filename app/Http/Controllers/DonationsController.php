@@ -113,7 +113,7 @@ class DonationsController extends Controller
 
         $data = $request->only(['amount', 'name', 'message']);
         $data['user_id'] = $user->id;
-        $data['donator_id']= $this->donatorID();
+        $data['donator_id']= 'ee2c3ca1-696b-4cc5-a6be-2c40d929d453';
 
         $result = Messages::create($data);
         return $result;

@@ -8,6 +8,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use App\Messages;
 use App\Invoices;
+use PDF;
 
 
 class InvoiceController extends Controller

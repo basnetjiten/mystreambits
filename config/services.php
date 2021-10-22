@@ -47,7 +47,8 @@ return [
     ],
 
     'esewa' => [
-        'key' => env('ESEWA_LIVE_SECRET_KEY'),
+        'live_key' => env('ESEWA_LIVE_SECRET_KEY'),
+        'test_key' => env('ESEWA_TEST_SECRET_KEY'),
     ],
     'ime' => [
         'username' => env('IME_USERNAME'),
