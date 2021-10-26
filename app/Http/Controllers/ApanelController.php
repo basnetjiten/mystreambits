@@ -211,8 +211,10 @@ class ApanelController extends Controller
 
     public function getRequestedInvoices()
     {
-        return DataTables::eloquent(Invoices::select(['user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['processing']))
-            ->editColumn('updated_at', function ($data) {
+        return DataTables::eloquent(Invoices::select(['id','user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['processing']))
+            ->editColumn('id', function ($data) {
+                return $data->id;
+            }) ->editColumn('updated_at', function ($data) {
                 return ($data->updated_at->format('d M Y'));
             })->editColumn('amount', function ($data) {
                 return number_format($data->amount, 2, '.', '');
@@ -250,9 +252,13 @@ class ApanelController extends Controller
 
     public function generateInvoice(Request $request)
     {
+
+        $this->validate($request, [
+            'id' => ['required', 'integer'],
+        ]);
         $userId = $request->id;
         $user = User::find($userId);
-        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->first();
+        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->id])->first();
         $image = base64_encode(file_get_contents(public_path('/img/logoo.jpg')));
 
         $this->view['invoice'] = [
@@ -272,12 +278,15 @@ class ApanelController extends Controller
     }
     public function updateInvoice(Request $request)
     {
+        $this->validate($request, [
+            'id' => ['required', 'integer'],
+        ]);
         $userId = $request->id;
 
         $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->whereIn('invoice_status', ['processing'])->first();
 
-        $invoice->invoice_status='paid';
-        dd($invoice);
+        $invoice->invoice_status='ready';
+
         $invoice->save();
 
         if($invoice)
@@ -285,5 +294,8 @@ class ApanelController extends Controller
         return response()->json(['fail' => trans('failed')]);
 
     }
+
+
+
 
 }

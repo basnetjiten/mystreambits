@@ -37,6 +37,7 @@
                                 <th>@lang('Fund Raised')</th>
                                 <th>@lang('Platform Fee')</th>
                                 <th>@lang('Date')</th>
+                                <th>@lang('Ready')</th>
 
                             </tr>
                             </thead>
@@ -106,6 +107,7 @@
                     {
 
                         data: "invoice_status",
+
                         sortable: true,
                         render: function (data) {
                             var statuses = JSON.parse(`{!! json_encode(trans('invoice.invoice.statuses')) !!}`);
@@ -123,10 +125,11 @@
                     {data: "updated_at"},
 
                     {
-                        data: "id",
+                        data: "invoice_id",
+                        className: 'dt-body-center',
                         render: function (data, type, full, meta) {
                             setTimeout(function () {
-                                $('#message-delete-' + data).ajaxForm({
+                                $('#invoiceStatus-update-' + data).ajaxForm({
                                     dataType: 'json',
                                     success: function (data) {
                                         auto_notify(data);
@@ -137,39 +140,64 @@
                                     }
                                 });
                             }, 500);
-                            return `{!! Form::open(['route' => 'apanel.invoice.generate', 'id' => 'message-delete-@{{ id }}']) !!}
+
+                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'id' =>  'invoiceStatus-update-@{{ id }}]) !!}
                                     {!! Form::hidden('id', '@{{ id }}') !!}
-                                    {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
+                                    {{ Form::checkbox('asap',data==1,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
                                     {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
                         }
                     },
                     {
                         data: "id",
+                        className: 'dt-body-center',
                         render: function (data, type, full, meta) {
                             setTimeout(function () {
-                                $('#message-delete-' + data).ajaxForm({
+                                $('#generate-invoice-' + data).ajaxForm({
                                     dataType: 'json',
-                                    success: function (data) {
-                                        auto_notify(data);
-                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
+                                    success: function (response) {
+
+                                        if (typeof response.data != 'undefined') donationTable.ajax.reload();
+                                        //console.log(response);
+                                        let blob = new Blob([response.data], {type: 'application/pdf'}),
+                                            url = window.URL.createObjectURL(blob);
+
+                                        window.open(url)
+
                                     },
                                     error: function (data) {
                                         error_notify(data.responseJSON);
                                     }
                                 });
                             }, 500);
-                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'id' => 'message-delete-@{{ id }}']) !!}
+
+                            return `{!! Form::open(['route' => 'apanel.invoice.generate', 'id' =>  'generate-invoice-@{{ id }}]) !!}
                                     {!! Form::hidden('id', '@{{ id }}') !!}
-                                    {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', ['type' => 'submit', 'class' => 'btn btn-danger']) !!}
+                                    {{ Form::checkbox('asap',true,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
                                     {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
                         }
-                    }
+                    },
+
+
+                    /* {
+                         data: "id",
+                         render: function ( data, type, full, meta ) {
+                             setTimeout(function() {
+                                 $('#message-delete-' + data).ajaxForm({
+                                     dataType:  'json',
+                                     success: function(data) { auto_notify(data); if (typeof data.success != 'undefined') donationTable.ajax.reload();  },
+                                     error: function(data) { error_notify(data.responseJSON); }
+                                 });
+                             }, 500);
+
+                         }
+                     }*/
 
                 ]
             });
 
 
         }
+
         $(function () {
             onTabSelected();
         });

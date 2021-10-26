@@ -22,7 +22,7 @@
 
         @endif
         #submit {
-            background-color: {{ $settings->button_color }}   !important;
+            background-color: {{ $settings->button_color }}    !important;
         }
     </style>
 @endsection
@@ -89,10 +89,16 @@
                 {{-- Methods --}}
                 <div class="list-group payment-methods">
                     {{-- PayPal --}}
+                    @if(config('esewa.status') == 'enabled' && $settings->esewa != '')
+                        @include('donations.elements.esewa')
+                    @endif
+                    @if(config('imepay.status') == 'enabled' && $settings->imepay != '')
+                        @include('donations.elements.imepay')
+                    @endif
+                    @if(config('khalti.status') == 'enabled' && $settings->khalti != '')
 
-                    @include('donations.elements.esewa')
-                    @include('donations.elements.imepay')
-                    @include('donations.elements.khalti')
+                        @include('donations.elements.khalti')
+                    @endif
                     {{--@if(config('paypal.status') == 'enabled' /*&& $settings->paypal != ''*/)--}}
                     {{--@include('donations.elements.paypal')
                     @include('donations.elements.esewa')

@@ -168,8 +168,8 @@
         Route::get('/apanel/invoices', ['uses' => 'ApanelController@getInvoices', 'as' => 'apanel.invoices']);
         Route::get('/apanel/invoices/request/data', ['uses' => 'ApanelController@getRequestedInvoices', 'as' => 'apanel.requested.invoices']);
         Route::get('/apanel/invoices/paid/data', ['uses' => 'ApanelController@getPaidInvoices', 'as' => 'apanel.paid.invoices']);
-        Route::get('/apanel/generate/invoice', ['uses' => 'ApanelController@generateInvoice', 'as' => 'apanel.invoice.generate']);
-        Route::get('/apanel/update/invoice', ['uses' => 'ApanelController@updateInvoice', 'as' => 'apanel.invoice.update']);
+        Route::post('/apanel/generate/invoice', ['uses' => 'ApanelController@generateInvoice', 'as' => 'apanel.invoice.generate']);
+        Route::post('/apanel/update/invoice', ['uses' => 'ApanelController@updateInvoice', 'as' => 'apanel.invoice.update']);
     }
     /* Terms & Conditions */
     {
