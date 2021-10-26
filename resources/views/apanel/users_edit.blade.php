@@ -20,6 +20,12 @@
             {!! Form::label('name', trans('apanel.users.name')) !!}
             {!! Form::text('name', $user['name'], [ 'class' => 'form-control' ]) !!}
         </div>
+
+    {{-- STREAM Name --}}
+    <div class="form-group">
+        {!! Form::label('stream_name', trans('apanel.users.stream_name')) !!}
+        {!! Form::text('stream_name', $user['stream_name'], [ 'class' => 'form-control' ]) !!}
+    </div>
         {{-- Token --}}
         <div class="form-group">
             {!! Form::label('token', trans('apanel.users.token')) !!}

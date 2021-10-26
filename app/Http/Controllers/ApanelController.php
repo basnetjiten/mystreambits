@@ -164,11 +164,12 @@ class ApanelController extends Controller
     public function getUsersData()
     {
         try {
-            return DataTables::eloquent(User::select(['id', 'name', /*'balance',*/
+            return DataTables::eloquent(User::select(['id', 'name', 'stream_name',/*'balance',*/
                 'email', 'timezone', 'avatar', 'token', 'created_at']))
                 ->editColumn('created_at', function ($data) {
                     return $data->created_at ? with(new Carbon($data->created_at))->setTimezone(Auth::user()->timezone) : '';
-                })/*->editColumn('balance', function ($data) {
+                })->editColumn('stream_name', function ($data) {
+                    return $data->stream_name;})/*->editColumn('balance', function ($data) {
                     return number_format($data->balance, 2, '.', '');
                 })*/
                 ->toJson();
@@ -182,6 +183,7 @@ class ApanelController extends Controller
         if (!$this->view['user'])
             abort(404);
         $this->view['title'] = trans('apanel.users.edit.title', ['id' => $this->view['user']->id]);
+        $this->view['stream_name'] = trans('apanel.users.edit.stream_name', ['id' => $this->view['stream_name']->id]);
         return view('apanel.users_edit', $this->view);
     }
 
@@ -279,9 +281,9 @@ class ApanelController extends Controller
     public function updateInvoice(Request $request)
     {
         $this->validate($request, [
-            'id' => ['required', 'integer'],
+            'invoice_id' => ['required', 'integer'],
         ]);
-        $userId = $request->id;
+        $userId =Auth::id();
 
         $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->whereIn('invoice_status', ['processing'])->first();
 

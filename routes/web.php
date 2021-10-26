@@ -78,6 +78,7 @@
     /* IMEPAY */
     {
         Route::post('/payments/imepay/redirect', ['uses' => 'Payments\ImePayController@imePayProcess']);
+        Route::get('/imePayCheckOut', ['uses' => 'Payments\ImePayController@imeCheckOut']);
     }
 }
 
@@ -151,6 +152,7 @@
         Route::get('/apanel/users/data', ['uses' => 'ApanelController@getUsersData', 'as' => 'apanel.users.data']);
         Route::get('/apanel/users/edit/{id}', ['uses' => 'ApanelController@getUsersEdit', 'as' => 'apanel.users.edit'])->where(['id' => '[0-9]+']);
         Route::post('/apanel/users/edit/{id}', ['uses' => 'ApanelController@postUsersEdit', 'as' => 'apanel.users.save'])->where(['id' => '[0-9]+']);
+
     }
     /* Payouts */
     {

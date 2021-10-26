@@ -124,32 +124,9 @@
                     {data: "commission_amount"},
                     {data: "updated_at"},
 
-                    {
-                        data: "invoice_id",
-                        className: 'dt-body-center',
-                        render: function (data, type, full, meta) {
-                            setTimeout(function () {
-                                $('#invoiceStatus-update-' + data).ajaxForm({
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        auto_notify(data);
-                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
-                                    },
-                                    error: function (data) {
-                                        error_notify(data.responseJSON);
-                                    }
-                                });
-                            }, 500);
 
-                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'id' =>  'invoiceStatus-update-@{{ id }}]) !!}
-                                    {!! Form::hidden('id', '@{{ id }}') !!}
-                                    {{ Form::checkbox('asap',data==1,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
-                                    {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
-                        }
-                    },
                     {
                         data: "id",
-                        className: 'dt-body-center',
                         render: function (data, type, full, meta) {
                             setTimeout(function () {
                                 $('#generate-invoice-' + data).ajaxForm({
@@ -176,21 +153,29 @@
                                     {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
                         }
                     },
+                    {
+                        data: "invoice_id",
+                        render: function (data, type, full, meta) {
+                            setTimeout(function () {
+                                $('#invoiceStatus-update-' + data).ajaxForm({
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        auto_notify(data);
+                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
+                                    },
+                                    error: function (data) {
+                                        error_notify(data.responseJSON);
+                                    }
+                                });
+                            }, 500);
 
+                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'invoice_id' =>  'invoiceStatus-update-@{{ invoice_id }}]) !!}
+                                    {!! Form::hidden('invoice_id', '@{{ invoice_id }}') !!}
+                                    {{ Form::checkbox('asap',data==1,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
+                                    {!! Form::close() !!}`.replaceAll('@{{ invoice_id }}', data);
+                        }
+                    },
 
-                    /* {
-                         data: "id",
-                         render: function ( data, type, full, meta ) {
-                             setTimeout(function() {
-                                 $('#message-delete-' + data).ajaxForm({
-                                     dataType:  'json',
-                                     success: function(data) { auto_notify(data); if (typeof data.success != 'undefined') donationTable.ajax.reload();  },
-                                     error: function(data) { error_notify(data.responseJSON); }
-                                 });
-                             }, 500);
-
-                         }
-                     }*/
 
                 ]
             });

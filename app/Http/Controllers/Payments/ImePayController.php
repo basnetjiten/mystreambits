@@ -52,10 +52,10 @@ class ImePayController extends Controller
 
         $response = curl_exec($curl);
         $decodedResponse = json_decode($response);
-        dd($response);
+
 
         curl_close($curl);
-        $imePayParams = $decodedResponse->TokenId . '|' . 'STREAMERS|' . $uuid . '|' . $userRequestPayment . '|' . 'GET|' . 'https://streamersalert.com/imePayCheckOut|' . 'https://streamersalert.com/imeCheckOutFailed';
+        $imePayParams = $decodedResponse->TokenId . '|' . 'STREAMERS|' . $uuid . '|' . $userRequestPayment . '|' . 'GET|' . 'https://opstreamers.com/imePayCheckOut|' . 'https://opstreamers.com/imeCheckOutFailed';
         $imePayBase64Params = base64_encode($imePayParams);
 
 

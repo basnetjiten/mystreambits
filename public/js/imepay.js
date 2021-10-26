@@ -18,7 +18,7 @@ $('.imepay').on('click', function () {
             console.log(this.imePayData);
 
             //window.location.href = 'https://payment.imepay.com.np:7979/WebCheckout/Checkout?data=' + this.imePayData;
-           // window.location.href = 'https://stg.imepay.com.np:7979/WebCheckout/Checkout?data=' + this.imePayData;
+            window.location.href = 'https://stg.imepay.com.np:7979/WebCheckout/Checkout?data=' + this.imePayData;
 
         }
     });

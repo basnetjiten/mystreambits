@@ -40,7 +40,7 @@
             <th style="max-width: 25px;"></th>
             <th>@lang('apanel.users.id')</th>
             <th>@lang('apanel.users.name')</th>
-            {{-- <th>@lang('apanel.users.balance')</th> --}}
+             <th>@lang('apanel.users.stream_name')</th>
             <th>@lang('apanel.users.email')</th>
             <th>@lang('apanel.users.timezone')</th>
             <th>@lang('apanel.users.token')</th>
@@ -77,6 +77,13 @@
                     { data: "id" },
                     {
                         data: "name",
+                        render: function(data, type, full) {
+                            return `<a href="{{ route('apanel.users.edit', ['id' => '0000']) }}">${data}</a>`.replace('0000', full.id);
+                        }
+                    },
+
+                    {
+                        data: "stream_name",
                         render: function(data, type, full) {
                             return `<a href="{{ route('apanel.users.edit', ['id' => '0000']) }}">${data}</a>`.replace('0000', full.id);
                         }

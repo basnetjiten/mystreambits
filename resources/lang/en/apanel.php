@@ -150,6 +150,7 @@ return [
         'balance' => 'Balance',
         'email' => 'Email',
         'name' => 'Username',
+        'stream_name' => 'Streamer',
         'timezone' => 'Timezone',
         'token' => 'Token', 
         'created_at' => 'Date of registration',
