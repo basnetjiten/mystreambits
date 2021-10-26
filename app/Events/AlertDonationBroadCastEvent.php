@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 class AlertDonationBroadCastEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $donationMessage;
+    public $donationMessageToken;
 
     /**
      * Create a new event instance.
@@ -21,7 +21,7 @@ class AlertDonationBroadCastEvent implements ShouldBroadcast
     public function __construct($userDonatedMessage)
     {
 
-        $this->donationMessage = $userDonatedMessage;
+        $this->donationMessageToken = $userDonatedMessage;
     }
 
     /**
@@ -33,11 +33,11 @@ class AlertDonationBroadCastEvent implements ShouldBroadcast
     {
         // dd( $this->currentTransByDonorForStreamer.$this->currentTransByDonorForStreamer->streamer->id.$this->currentTransByDonorForStreamer->donor->name);
 
-        return new PrivateChannel('stream-bits' . $this->donationMessage->user_id);
+        return new PrivateChannel('op-stream-bits' . $this->donationMessageToken);
     }
 
 
-    public function broadcastWith()
+    /*public function broadcastWith()
     {
         return [
             'donation' => [
@@ -52,5 +52,5 @@ class AlertDonationBroadCastEvent implements ShouldBroadcast
             ],
 
         ];
-    }
+    }*/
 }

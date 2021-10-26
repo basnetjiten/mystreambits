@@ -45,7 +45,7 @@ class KhaltiPayController extends Controller
 
             //get the transaction associated with donors mobile number
             //whose token is unverified
-            $message = Messages::where('phone', $request->donator_id)
+            $message = Messages::where('donator_id', $request->donator_id)
                 ->where('invoice_status', 'unpaid')
                 ->latest()
                 ->first();
@@ -60,7 +60,7 @@ class KhaltiPayController extends Controller
             //dispatch the broadcast notification
             if ($saved) {
                 if ($message != null) {
-                    ProcessDonationMessage::dispatch($message, 'liveAlert')->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                    ProcessDonationMessage::dispatch($message->user_id)->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
                     return response()->json(['success' => trans('donations.create.success')]);
                 }
                 return response()->json(['error' => trans('donations.create.error')]);

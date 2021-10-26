@@ -130,24 +130,25 @@ class ImePayController extends Controller
 
                 //get the transaction associated with donors mobile number
                 //whose token is unverified
-                $transaction = Messages::where('phone', $jsonConfirmResponse->Msisdn)
-                    ->where('token', 'unverified')
+                //TODO:Jiten basnet later check this as donator_id (pass donator_id_
+
+                $message = Messages::where('donator_id', $jsonConfirmResponse->Msisdn)
+                    ->where('invoice_status', 'unpaid')
                     ->latest()
                     ->first();
                 //update the transaction field with all the verified data from khalti server
-                $transaction->amount = $txnAmount;
-                $transaction->token = $tokenId;
-                $transaction->pid = $txnId;
-                $transaction->pay_type = "imepay";
-
-                $transaction->donation_status = "Completed";
-                $saved = $transaction->save();
+                $message->amount = $txnAmount;
+                $message->token = $tokenId;
+                $message->token = $txnId;
+                $message->biling_system = "imepay";
+                $message->status = "success";
+                $saved = $message->save();
 
                 //if successfully stored in our database
                 //dispatch the broadcast notification
                 if ($saved) {
-                    if ($transaction != null) {
-                        ProcessDonationMessage::dispatch($transaction, 'liveAlert')->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                    if ($message != null) {
+                        ProcessDonationMessage::dispatch($message->user_id)->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
                         return response()->json(['success' => trans('donations.create.success')]);
                     }
                     return response()->json(['error' => trans('donations.create.error')]);

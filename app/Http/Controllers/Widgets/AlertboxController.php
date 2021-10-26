@@ -140,6 +140,7 @@ class AlertboxController extends Controller
 
         $message->timestamps = false;
         $message->view_status = 'true';
+        $message->status = 'success';
         $message->save();
     }
 

@@ -94,7 +94,7 @@ class EsewaPayController extends Controller
 
 
                 $response_code = $this->get_xml_node_value('response_code', $response);
-                dd($response_code);
+
                 if (trim($response_code) == 'Success') {
                     //update the transaction field with all the verified data from khalti server
 
@@ -106,7 +106,7 @@ class EsewaPayController extends Controller
                     //dispatch the broadcast notification
                     if ($saved) {
                         if ($message != null) {
-                            ProcessDonationMessage::dispatch($message, 'liveAlert')->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
+                            ProcessDonationMessage::dispatch($message->user_id)->onConnection(env('QUEUE_CONNECTION'))->onQueue(env('SQS_QUEUE'))->delay(now()->addSecond(30));
                             return response()->json(['success' => trans('donations.create.success')]);
                         }
                         return response()->json(['error' => trans('donations.create.error')]);
