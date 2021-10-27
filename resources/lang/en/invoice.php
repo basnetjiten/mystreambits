@@ -8,6 +8,10 @@ return [
             'processing' => 'Processing',
             'unpaid' => 'Unpaid'
         ],
+        'create' => [
+            'error' => 'Message not found',
+            'success' => 'Message successfully deleted'
+        ],
     ],
 
 ];

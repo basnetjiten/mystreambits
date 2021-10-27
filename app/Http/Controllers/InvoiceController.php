@@ -62,8 +62,11 @@ class InvoiceController extends Controller
                 ]);
                 if ($newInvoice) {
                     $newInvoice->save();
+                    return response()->json(['success' => trans('invoice.create.success')]);
 
                 }
+                return response()->json(['error' => trans('invoice.create.error')]);
+
             }
 
         }
@@ -73,7 +76,7 @@ class InvoiceController extends Controller
 
     public function getData()
     {
-        return DataTables::eloquent(Invoices::select(['updated_at', 'invoice_status', 'amount', 'commission_amount','invoice_id'])->where('user_id',Auth::id()))
+        return DataTables::eloquent(Invoices::select(['updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->where('user_id', Auth::id()))
             ->editColumn('updated_at', function ($data) {
                 return $data->updated_at ? with(new Carbon($data->updated_at))->setTimezone(Auth::user()->timezone) : '';
             })->editColumn('amount', function ($data) {

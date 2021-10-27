@@ -58,7 +58,7 @@
             anti_spam = {{ $user->links == 'true' ? 'true' : 'false' }},
             duration_timeout_id = false, messages = [], message, voice,
             steap_3_access = false;
-        userId = {{$user->id}}
+            userId = {{$user->id}}
 
             window['link-replacment-text'] = "{{ trans('widgets.link-replacment-text') }}";
 
@@ -235,7 +235,7 @@
                 // Amount
                 $('[data-amount]').html(`${animate(message.amount, '{!! config("app.currency_icon") !!}')}`);
                 // Message 
-                $('[data-message').html(removeLink(removeBadWords(message.message)), anti_spam);
+                $('[data-message]').html(removeLink(removeBadWords(message.message)), anti_spam);
                 // Show
                 $('#content').removeClass('fadeOut').addClass('fadeIn');
                 // Music
@@ -288,8 +288,8 @@
             // Show :: Steap 3
             _show.steap_3 = function () {
                 steap_3_access = false;
-                message = [];
-                setTimeout(show_message, 1000);
+               // message = [];
+                //setTimeout(get_messages, 1000);
             };
 
             // Start

@@ -19,7 +19,7 @@ class EsewaPayController extends Controller
 
     private function _commission($amount)
     {
-        return round(($amount / 100) * config('paypal.commission'), 2);
+        return round(($amount / 100) * config('essewa.commission'), 2);
     }
 
     public function esewaPaymentInitiator()
@@ -101,6 +101,7 @@ class EsewaPayController extends Controller
                     $message->token = $request->refId;
                     $message->biling_system = "esewa";
                     $message->status = "success";
+                    $message->commission = $this->_commission($message->amount);
                     $saved = $request->save();
                     //if successfully stored in our database
                     //dispatch the broadcast notification
