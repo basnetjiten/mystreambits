@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class KhaltiPayController extends Controller
 {
+
+    private function _commission($amount)
+    {
+        return round(($amount / 100) * config('khalti.commission'), 2);
+    }
+
     //performs client payment verification obtained from khalti payload
     public function khaltiVerification(Request $request)
     {
@@ -28,7 +34,7 @@ class KhaltiPayController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $args);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         //test_public_key_dc74e0fd57cb46cd93832aee0a390234
-        $khaltiSecretKey ="test_public_key_dc74e0fd57cb46cd93832aee0a390234"; /*Config::get('services.khalti.key');*/
+        $khaltiSecretKey = "test_public_key_dc74e0fd57cb46cd93832aee0a390234"; /*Config::get('services.khalti.key');*/
         $headers = ["Authorization: {$khaltiSecretKey}"];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -53,7 +59,9 @@ class KhaltiPayController extends Controller
             $message->amount = $khaltiResponse->amount / 100;
             $message->token = $request->token;
             $message->billing_system = "khalti";
-            $message->status='success';
+            $message->status = 'success';
+            $message->commission = $this->_commission($message->amount);
+
             $saved = $message->save();
 
             //if successfully stored in our database

@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class ImePayController extends Controller
 {
+
+    private function _commission($amount)
+    {
+        return round(($amount / 100) * config('imepay.commission'), 2);
+    }
+
     public function imePayProcess(Request $request)
     {
 
@@ -142,6 +148,8 @@ class ImePayController extends Controller
                 $message->token = $txnId;
                 $message->biling_system = "imepay";
                 $message->status = "success";
+                $message->commission = $this->_commission($message->amount);
+
                 $saved = $message->save();
 
                 //if successfully stored in our database

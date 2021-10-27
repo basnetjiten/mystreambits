@@ -19,7 +19,7 @@ class EsewaPayController extends Controller
 
     private function _commission($amount)
     {
-        return round(($amount / 100) * config('essewa.commission'), 2);
+        return round(($amount / 100) * config('esewa.commission'), 2);
     }
 
     public function esewaPaymentInitiator()
