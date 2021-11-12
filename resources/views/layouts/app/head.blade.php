@@ -14,6 +14,7 @@
     <link href="{{ asset('assets/vendor/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css"/>
     <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+    <script src="https://uatapi.nimbbl.tech/static/assets/js/checkout.js"></script>
 
     @endsection
 @yield('head')

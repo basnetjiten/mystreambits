@@ -89,13 +89,13 @@
                 {{-- Methods --}}
                 <div class="list-group payment-methods">
                     {{-- PayPal --}}
-                    @if(config('esewa.status') == 'enabled' && $settings->esewa != '')
+                    @if(config('esewa.status') == 'enabled')
                         @include('donations.elements.esewa')
                     @endif
-                    @if(config('imepay.status') == 'enabled' && $settings->imepay != '')
+                    @if(config('imepay.status') == 'enabled')
                         @include('donations.elements.imepay')
                     @endif
-                    @if(config('khalti.status') == 'enabled' && $settings->khalti != '')
+                    @if(config('khalti.status') == 'enabled')
 
                         @include('donations.elements.khalti')
                     @endif
@@ -191,8 +191,6 @@
                         document.querySelectorAll('.payment-methods a').forEach(el => {
 
                             let id = el.id;
-                            console.log(data.donator_id);
-                            console.log(id);
                             $('#' + id).attr('data-id', data.donator_id);
                             $('#' + id).attr('data-amount', data.amount);
                             //console.log(`Element ${el.tagName} with ID #${el.id} says: ${el.textContent}`);

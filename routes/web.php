@@ -80,6 +80,16 @@
         Route::post('/payments/imepay/redirect', ['uses' => 'Payments\ImePayController@imePayProcess']);
         Route::get('/imePayCheckOut', ['uses' => 'Payments\ImePayController@imeCheckOut']);
     }
+
+    /* PAYU */
+    {
+        Route::post('/payments/payu/redirect', ['uses' => 'Payments\PayUController@payUOrderProcess']);
+        Route::post('/payments/verify/payu/redirect', ['uses' => 'Payments\PayUController@verifyPayment']);
+       // Route::get('/imePayCheckOut', ['uses' => 'Payments\ImePayController@imeCheckOut']);
+    }
+
+
+
 }
 
 /* Widets */
@@ -171,7 +181,7 @@
         Route::get('/apanel/invoices/request/data', ['uses' => 'ApanelController@getRequestedInvoices', 'as' => 'apanel.requested.invoices']);
         Route::get('/apanel/invoices/paid/data', ['uses' => 'ApanelController@getPaidInvoices', 'as' => 'apanel.paid.invoices']);
         Route::post('/apanel/generate/invoice', ['uses' => 'ApanelController@generateInvoice', 'as' => 'apanel.invoice.generate']);
-        Route::post('/apanel/update/invoice', ['uses' => 'ApanelController@updateInvoice', 'as' => 'apanel.invoice.update']);
+        Route::post('/apanel/update-invoice', ['uses' => 'ApanelController@postUpdateInvoice', 'as' => 'apanel.update-invoice']);
     }
     /* Terms & Conditions */
     {

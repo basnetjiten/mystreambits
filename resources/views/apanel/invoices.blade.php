@@ -39,6 +39,7 @@
                                 <th>@lang('Date')</th>
                                 <th>@lang('Ready')</th>
 
+
                             </tr>
                             </thead>
                         </table>
@@ -110,11 +111,14 @@
 
                         sortable: true,
                         render: function (data) {
+                            console.log(data);
                             var statuses = JSON.parse(`{!! json_encode(trans('invoice.invoice.statuses')) !!}`);
                             var color = 'danger';
                             if (data == 'paid')
                                 color = 'success';
                             else if (data == 'processing')
+                                color = 'warning';
+                            else if (data == 'ready')
                                 color = 'warning';
                             return `<span class="text-${color}">${statuses[data]}</span>`;
                         }
@@ -124,56 +128,48 @@
                     {data: "commission_amount"},
                     {data: "updated_at"},
 
-
                     {
-                        data: "id",
+                        data: 'invoice_id',
                         render: function (data, type, full, meta) {
-                            setTimeout(function () {
-                                $('#generate-invoice-' + data).ajaxForm({
-                                    dataType: 'json',
-                                    success: function (response) {
+                            console.log(data);
 
-                                        if (typeof response.data != 'undefined') donationTable.ajax.reload();
-                                        //console.log(response);
-                                        let blob = new Blob([response.data], {type: 'application/pdf'}),
-                                            url = window.URL.createObjectURL(blob);
 
-                                        window.open(url)
+                            $(document).ready(function () {
+                                $(":checkbox").click(function (event) {
+                                    var value = $("#action1").val();
+                                    console.log(value);
 
-                                    },
-                                    error: function (data) {
-                                        error_notify(data.responseJSON);
-                                    }
+
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url: "{{ route('apanel.update-invoice') }}",
+                                        type: 'POST',
+                                        data: {
+                                            invoice_id: value
+
+                                        },
+
+                                        success: function (response) {
+                                            auto_notify(response);
+                                            invoiceRequestTable.ajax.reload();
+
+                                        },
+                                        error: function (response) {
+                                            error_notify(response);
+
+                                        }
+                                    });
+
                                 });
-                            }, 500);
+                            });
+                            console.log(full['invoice_status']);
+                            var isReady = full['invoice_status'] === 'ready';
+                            return `<input type="checkbox"  id="action1" title="Action 1" value="${data}" ${isReady ? "checked" : ""}  />`;
 
-                            return `{!! Form::open(['route' => 'apanel.invoice.generate', 'id' =>  'generate-invoice-@{{ id }}]) !!}
-                                    {!! Form::hidden('id', '@{{ id }}') !!}
-                                    {{ Form::checkbox('asap',true,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
-                                    {!! Form::close() !!}`.replaceAll('@{{ id }}', data);
-                        }
-                    },
-                    {
-                        data: "invoice_id",
-                        render: function (data, type, full, meta) {
-                            setTimeout(function () {
-                                $('#invoiceStatus-update-' + data).ajaxForm({
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        auto_notify(data);
-                                        if (typeof data.success != 'undefined') donationTable.ajax.reload();
-                                    },
-                                    error: function (data) {
-                                        error_notify(data.responseJSON);
-                                    }
-                                });
-                            }, 500);
 
-                            return `{!! Form::open(['route' => 'apanel.invoice.update', 'invoice_id' =>  'invoiceStatus-update-@{{ invoice_id }}]) !!}
-                                    {!! Form::hidden('invoice_id', '@{{ invoice_id }}') !!}
-                                    {{ Form::checkbox('asap',data==1,false, array('id'=>'asap', 'style'=>'width:20px; height:20px','data-toggle'=>'toggle', 'data-onstyle'=>'success',)) }}
-                                    {!! Form::close() !!}`.replaceAll('@{{ invoice_id }}', data);
-                        }
+                        },
                     },
 
 

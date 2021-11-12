@@ -169,7 +169,8 @@ class ApanelController extends Controller
                 ->editColumn('created_at', function ($data) {
                     return $data->created_at ? with(new Carbon($data->created_at))->setTimezone(Auth::user()->timezone) : '';
                 })->editColumn('stream_name', function ($data) {
-                    return $data->stream_name;})/*->editColumn('balance', function ($data) {
+                    return $data->stream_name;
+                })/*->editColumn('balance', function ($data) {
                     return number_format($data->balance, 2, '.', '');
                 })*/
                 ->toJson();
@@ -213,10 +214,10 @@ class ApanelController extends Controller
 
     public function getRequestedInvoices()
     {
-        return DataTables::eloquent(Invoices::select(['id','user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['processing']))
+        return DataTables::eloquent(Invoices::select(['id', 'user_id', 'updated_at', 'invoice_status', 'amount', 'commission_amount', 'invoice_id'])->whereIn('invoice_status', ['processing', 'ready']))
             ->editColumn('id', function ($data) {
                 return $data->id;
-            }) ->editColumn('updated_at', function ($data) {
+            })->editColumn('updated_at', function ($data) {
                 return ($data->updated_at->format('d M Y'));
             })->editColumn('amount', function ($data) {
                 return number_format($data->amount, 2, '.', '');
@@ -258,9 +259,9 @@ class ApanelController extends Controller
         $this->validate($request, [
             'id' => ['required', 'integer'],
         ]);
-        $userId = $request->id;
-        $user = User::find($userId);
-        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->id])->first();
+
+        $invoice = Invoices::where(['invoice_id' => $request->invoice_id])->first();
+        $user = User::find($invoice->user_id);
         $image = base64_encode(file_get_contents(public_path('/img/logoo.jpg')));
 
         $this->view['invoice'] = [
@@ -278,26 +279,35 @@ class ApanelController extends Controller
         $pdf->setPaper('A5', 'portrait');
         return $pdf->download($user->name . 'pdf');
     }
-    public function updateInvoice(Request $request)
+
+    public function postUpdateInvoice(Request $request)
     {
+
+
         $this->validate($request, [
             'invoice_id' => ['required', 'integer'],
         ]);
-        $userId =Auth::id();
 
-        $invoice = Invoices::where(['user_id' => $userId, 'invoice_id' => $request->invoice_id])->whereIn('invoice_status', ['processing'])->first();
 
-        $invoice->invoice_status='ready';
+        $invoice = Invoices::where('invoice_id', $request->invoice_id)->whereIn('invoice_status', ['processing'])->first();
 
+        if ($invoice != null) {
+
+            $invoice->invoice_status = 'ready';
+
+
+        } else {
+            $invoice = Invoices::where('invoice_id', $request->invoice_id)->whereIn('invoice_status', ['ready'])->first();
+            $invoice->invoice_status = 'processing';
+
+
+        }
         $invoice->save();
-
-        if($invoice)
-        return response()->json(['success' => trans('success')]);
+        if ($invoice)
+            return response()->json(['success' => trans('success')]);
         return response()->json(['fail' => trans('failed')]);
 
     }
-
-
 
 
 }

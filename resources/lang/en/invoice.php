@@ -6,7 +6,8 @@ return [
         'statuses' => [
             'paid' => 'Paid',
             'processing' => 'Processing',
-            'unpaid' => 'Unpaid'
+            'unpaid' => 'Unpaid',
+            'ready' => 'Ready'
         ],
         'create' => [
             'error' => 'Message not found',
